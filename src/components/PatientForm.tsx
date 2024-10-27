@@ -1,8 +1,12 @@
 import { useForm } from "react-hook-form";
 import Error from "./Error";
 import type { DraftPatient } from "../types";
+import { usePatientStore } from "../store/store";
 
 export default function PatientForm() {
+  // para acceder a las funciones y estados del store se utiliza el hook usePatientStore se pueden utilizar cualquera de las 2 formas
+  // const addPatient = usePatientStore((state) => state.addPatient);
+  const { addPatient } = usePatientStore();
   // register: Función para registrar los campos del formulario y validarlos
   // handleSubmit: Función para manejar el envío del formulario
   // formState: Objeto que contiene el estado del formulario  y se le coloca {errors} para desestructurar el objeto y obtener los errores
@@ -13,7 +17,7 @@ export default function PatientForm() {
   } = useForm<DraftPatient>();
 
   const registerPatient = (data: DraftPatient) => {
-    console.log(data);
+    addPatient(data);
   };
   return (
     <div className="mx-5 md:w-1/2 lg:w-2/5">
