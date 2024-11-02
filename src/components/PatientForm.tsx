@@ -5,7 +5,9 @@ import { usePatientStore } from "../store/store";
 
 export default function PatientForm() {
   // para acceder a las funciones y estados del store se utiliza el hook usePatientStore se pueden utilizar cualquera de las 2 formas
+  // por asignacion de nombre
   // const addPatient = usePatientStore((state) => state.addPatient);
+  // por desestructuracion
   const { addPatient } = usePatientStore();
   // register: Función para registrar los campos del formulario y validarlos
   // handleSubmit: Función para manejar el envío del formulario
