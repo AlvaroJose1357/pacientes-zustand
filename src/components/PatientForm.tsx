@@ -2,25 +2,46 @@ import { useForm } from "react-hook-form";
 import Error from "./Error";
 import type { DraftPatient } from "../types";
 import { usePatientStore } from "../store/store";
+import { useEffect } from "react";
 
 export default function PatientForm() {
   // para acceder a las funciones y estados del store se utiliza el hook usePatientStore se pueden utilizar cualquera de las 2 formas
   // por asignacion de nombre
   // const addPatient = usePatientStore((state) => state.addPatient);
   // por desestructuracion
-  const { addPatient } = usePatientStore();
+  const { addPatient, activeID, patients, updatePatient } = usePatientStore();
   // register: Función para registrar los campos del formulario y validarlos
   // handleSubmit: Función para manejar el envío del formulario
   // formState: Objeto que contiene el estado del formulario  y se le coloca {errors} para desestructurar el objeto y obtener los errores
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
     reset,
   } = useForm<DraftPatient>();
 
+  useEffect(() => {
+    if (activeID) {
+      // se le coloca [0] para que devuelva el objeto y no el array
+      const activePatient = patients.filter(
+        (patient) => patient.id === activeID,
+      )[0];
+      setValue("name", activePatient.name);
+      setValue("caretaker", activePatient.caretaker);
+      setValue("email", activePatient.email);
+      setValue("date", activePatient.date);
+      setValue("symptoms", activePatient.symptoms);
+    }
+  }, [activeID]);
+
   const registerPatient = (data: DraftPatient) => {
-    addPatient(data);
+    if (activeID) {
+      updatePatient(data);
+      return;
+    } else {
+      addPatient(data);
+    }
     reset();
   };
   return (
@@ -135,7 +156,7 @@ export default function PatientForm() {
         <input
           type="submit"
           className="w-full cursor-pointer bg-indigo-600 p-3 font-bold uppercase text-white transition-colors hover:bg-indigo-800"
-          value="Guardar Paciente"
+          value={activeID ? "Actualizar Paciente" : "Añadir Paciente"}
         />
       </form>
     </div>

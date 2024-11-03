@@ -7,6 +7,7 @@ type PatientDetailsProps = {
 };
 export default function PatientDetails({ patient }: PatientDetailsProps) {
   const deletePatient = usePatientStore((state) => state.deletePatient);
+  const getPatientbyId = usePatientStore((state) => state.getPatientbyID);
 
   const handleDelete = () => {
     deletePatient(patient.id);
@@ -19,9 +20,13 @@ export default function PatientDetails({ patient }: PatientDetailsProps) {
       <PatientDetailsItem label="Email" data={patient.email} />
       <PatientDetailsItem label="Fecha Alta" data={patient.date.toString()} />
       <PatientDetailsItem label="Sintomas" data={patient.symptoms} />
-      <div className="mt-10 flex justify-between max-lg:flex-col">
+      <div className="mt-10 flex flex-col justify-between gap-3 lg:flex-row">
         <button
           type="button"
+          // haciendolo mediante funcion externa
+          // onClick={handleEdit}
+          // haciendolo mediante funcion interna
+          onClick={() => getPatientbyId(patient.id)}
           className="rounded-xl bg-indigo-600 px-10 py-2 font-bold uppercase text-white hover:bg-indigo-800"
         >
           Editar
@@ -32,7 +37,7 @@ export default function PatientDetails({ patient }: PatientDetailsProps) {
           onClick={handleDelete}
           // haciendolo mediante funcion interna
           // onClick={() => deletePatient(patient.id)}
-          className="rounded-xl bg-red-600 px-10 py-2 font-bold uppercase text-white hover:bg-red-800 max-lg:mt-5"
+          className="rounded-xl bg-red-600 px-10 py-2 font-bold uppercase text-white hover:bg-red-800"
         >
           Eliminar
         </button>
